@@ -24,7 +24,7 @@ public class MoneyManager : MonoBehaviour
 
     public void AddMoney(float productValue)
     {
-        gameManager.MoneyUpdater(moneyToAdd);
+        gameManager.InventoryUpdater(moneyToAdd, "money");
         Debug.Log("Adding Money to GameManger");
     }
 

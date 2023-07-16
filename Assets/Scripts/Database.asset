@@ -15,9 +15,11 @@ MonoBehaviour:
   objectsData:
   - <name>k__BackingField: Neck Table
     <ID>k__BackingField: 0
+    <costToBuild>k__BackingField: 5
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 8284809914662008239, guid: 5bc6fe69657fb53448003e0972fb6d32, type: 3}
   - <name>k__BackingField: Body Table
     <ID>k__BackingField: 1
+    <costToBuild>k__BackingField: 20
     <Size>k__BackingField: {x: 2, y: 1}
     <Prefab>k__BackingField: {fileID: 5522830537790260517, guid: 58fbc6dbad33363409db18f4af65f2ba, type: 3}

@@ -7,6 +7,7 @@ public class PlacementSystem : MonoBehaviour
 {
     [SerializeField] private GameObject mouseIndicator, cellIndicator;
     [SerializeField] private InputManager inputManager;
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private Grid grid;
 
     [SerializeField] 
@@ -42,10 +43,19 @@ public class PlacementSystem : MonoBehaviour
         {
             return;
         }
-        Vector3 mousePosition = inputManager.GetSelectedMapPosition();
-        Vector3Int gridPosition = grid.WorldToCell(mousePosition);
-        GameObject newObject = Instantiate(database.objectsData[selectedObjectIndex].Prefab);
-        newObject.transform.position = grid.CellToWorld(gridPosition);
+        if (gameManager.money >= database.objectsData[selectedObjectIndex].costToBuild)
+        {
+            Vector3 mousePosition = inputManager.GetSelectedMapPosition();
+            Vector3Int gridPosition = grid.WorldToCell(mousePosition);
+            GameObject newObject = Instantiate(database.objectsData[selectedObjectIndex].Prefab);
+            newObject.transform.position = grid.CellToWorld(gridPosition);
+            gameManager.InventoryUpdater(-database.objectsData[selectedObjectIndex].costToBuild, "money");
+        }
+        else
+        {
+            Debug.Log("Insufficient Funds");
+            return;
+        }
     }
 
     private void StopPlacement()
