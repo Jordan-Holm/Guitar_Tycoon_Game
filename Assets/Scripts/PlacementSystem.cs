@@ -17,9 +17,18 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private GameObject gridVisual;
 
+    private GridData floorData, stationData;
+
+    private Renderer previewRenderer;
+
+    private List<GameObject> placedGameObjects = new();
+
     private void Start()
     {
         StopPlacement();
+        floorData = new();
+        stationData = new();
+        previewRenderer = cellIndicator.GetComponentInChildren<Renderer>();
     }
 
     public void StartPlacement(int ID)
@@ -33,6 +42,7 @@ public class PlacementSystem : MonoBehaviour
         }
         gridVisual.SetActive(true);
         cellIndicator.SetActive(true);
+        mouseIndicator.SetActive(true);
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
     }
@@ -43,13 +53,29 @@ public class PlacementSystem : MonoBehaviour
         {
             return;
         }
+
         if (gameManager.money >= database.objectsData[selectedObjectIndex].costToBuild)
         {
             Vector3 mousePosition = inputManager.GetSelectedMapPosition();
             Vector3Int gridPosition = grid.WorldToCell(mousePosition);
+
+            bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
+            if (placementValidity == false)
+                return;
+
             GameObject newObject = Instantiate(database.objectsData[selectedObjectIndex].Prefab);
             newObject.transform.position = grid.CellToWorld(gridPosition);
+            placedGameObjects.Add(newObject);
+            GridData selectedData = database.objectsData[selectedObjectIndex].type == "floor" ?
+                floorData :
+                stationData;
+            selectedData.AddObjectAt(gridPosition,
+                database.objectsData[selectedObjectIndex].Size,
+                database.objectsData[selectedObjectIndex].ID,
+                placedGameObjects.Count - 1);
+
             gameManager.InventoryUpdater(-database.objectsData[selectedObjectIndex].costToBuild, "money");
+            StopPlacement();
         }
         else
         {
@@ -58,11 +84,21 @@ public class PlacementSystem : MonoBehaviour
         }
     }
 
+    private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
+    {
+        GridData selectedData = database.objectsData[selectedObjectIndex].type == "floor" ? 
+            floorData : 
+            stationData;
+
+        return selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
+    }
+
     private void StopPlacement()
     {
         selectedObjectIndex = -1;
         gridVisual.SetActive(false);
         cellIndicator.SetActive(false);
+        mouseIndicator.SetActive(false);
         inputManager.OnClicked -= PlaceStructure;
         inputManager.OnExit -= StopPlacement;
     }
@@ -73,6 +109,10 @@ public class PlacementSystem : MonoBehaviour
             return;
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
+
+        bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
+        previewRenderer.material.color = placementValidity ? Color.green: Color.red;
+
         mouseIndicator.transform.position = mousePosition;
         cellIndicator.transform.position = grid.CellToWorld(gridPosition);
     }

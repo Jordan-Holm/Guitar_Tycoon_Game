@@ -15,6 +15,8 @@ public class ObjectData
     [field: SerializeField]
     public string name { get; private set; }
     [field: SerializeField]
+    public string type { get; private set; }
+    [field: SerializeField]
     public int ID { get; private set; }
     [field: SerializeField]
     public float costToBuild { get; private set; }
