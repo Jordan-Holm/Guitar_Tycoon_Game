@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour
 {
-    [SerializeField] private Camera mainCamera;
+    [SerializeField] public Camera mainCamera;
 
     private Vector3 lastPosition;
 
@@ -20,6 +20,7 @@ public class InputManager : MonoBehaviour
             OnClicked?.Invoke();
         if (Input.GetKeyDown(KeyCode.Escape))
             OnExit?.Invoke();
+
     }
 
     public bool IsPointerOverUI()

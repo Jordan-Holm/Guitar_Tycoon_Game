@@ -119,8 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54f33d47e1589a747bdaf6a7372b62c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productValue: 5
   timeRemaining: 5
+  woodNeededToBuild: 1
 --- !u!1 &8284809914662008239
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 9087819159533747256}
   m_Layer: 0
   m_Name: Neck Table Prefab
-  m_TagString: Untagged
+  m_TagString: Station
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
