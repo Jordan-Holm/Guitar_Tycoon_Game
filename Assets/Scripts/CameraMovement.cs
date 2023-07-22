@@ -25,24 +25,33 @@ public class CameraMovement : MonoBehaviour
 
     void Movement()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (transform.position.z < 1)
         {
-            transform.position += Vector3.forward * speed * Time.deltaTime;
+            if (Input.GetKey(KeyCode.W))
+            {
+                transform.position += Vector3.forward * speed * Time.deltaTime;
+            }
         }
-
-        if (Input.GetKey(KeyCode.S))
+        if (transform.position.z > -8)
         {
-            transform.position += Vector3.back * speed * Time.deltaTime;
+            if (Input.GetKey(KeyCode.S))
+            {
+                transform.position += Vector3.back * speed * Time.deltaTime;
+            }
         }
-
-        if (Input.GetKey(KeyCode.A))
+        if (transform.position.x > -4.5)
         {
-            transform.position += Vector3.left * speed * Time.deltaTime;
+            if (Input.GetKey(KeyCode.A))
+            {
+                transform.position += Vector3.left * speed * Time.deltaTime;
+            }
         }
-
-        if (Input.GetKey(KeyCode.D))
+        if (transform.position.x < 4.5)
         {
-            transform.position += Vector3.right * speed * Time.deltaTime;
+            if (Input.GetKey(KeyCode.D))
+            {
+                transform.position += Vector3.right * speed * Time.deltaTime;
+            }
         }
     }
 
@@ -50,25 +59,41 @@ public class CameraMovement : MonoBehaviour
     {
         // The Camera will move within a certain amount of pixels of the edge of the screen
         float edgeSize = 40f;
-        // Moves the Main Camera to the right
-        if (Input.mousePosition.x > Screen.width - edgeSize)
+        // prevents the camera from moving too far to the right
+        if (transform.position.x < 4.5)
         {
-            transform.position += Vector3.right * speed * Time.deltaTime;
+            // Moves the Main Camera to the right
+            if (Input.mousePosition.x > Screen.width - edgeSize)
+            {
+                transform.position += Vector3.right * speed * Time.deltaTime;
+            }
         }
-        // Moves the Main Camera to the Left
-        if (Input.mousePosition.x < edgeSize)
+        // prevents the camera from moving too far the left
+        if (transform.position.x > -4.5)
         {
-            transform.position += Vector3.left * speed * Time.deltaTime;
+            // Moves the Main Camera to the Left
+            if (Input.mousePosition.x < edgeSize)
+            {
+                transform.position += Vector3.left * speed * Time.deltaTime;
+            }
         }
-        //Moves the Main Camera forward
-        if (Input.mousePosition.y > Screen.height - edgeSize)
+        // prevents the camera from moving too far forward
+        if (transform.position.z < 1)
         {
-            transform.position += Vector3.forward * speed * Time.deltaTime;
+            //Moves the Main Camera forward
+            if (Input.mousePosition.y > Screen.height - edgeSize)
+            {
+                transform.position += Vector3.forward * speed * Time.deltaTime;
+            }
         }
-        // Moves the Main Camera Backward
-        if (Input.mousePosition.y < edgeSize)
+        // prevents the camrea from moving too far backward
+        if (transform.position.z > -8)
         {
-            transform.position += Vector3.back * speed * Time.deltaTime;
+            // Moves the Main Camera Backward
+            if (Input.mousePosition.y < edgeSize)
+            {
+                transform.position += Vector3.back * speed * Time.deltaTime;
+            }
         }
 
         // Prevents the Main Camera from going lower than 5 on the Y axis
