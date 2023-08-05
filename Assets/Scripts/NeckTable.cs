@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class NeckTable : MonoBehaviour
 {
-    public float timeRemaining = 5f;
+    public float timeToBuild = 5f;
     public int woodNeededToBuild = 1;
 
     private GameManager gameManager;
+    public InventoryItemData ItemData;
 
     private void Awake()
     {
@@ -15,27 +16,24 @@ public class NeckTable : MonoBehaviour
     }
     private void Update()
     {
-        if (timeRemaining > 0)
+        if (timeToBuild > 0)
         {
-            timeRemaining -= Time.deltaTime;
+            timeToBuild -= Time.deltaTime;
+            Debug.Log(timeToBuild);
         }
         else
         {
-            if (gameManager.woodCount >= woodNeededToBuild)
-            {
-                gameManager.InventoryUpdater(1, "neck");
-                gameManager.InventoryUpdater(-1, "wood");
-                timeRemaining = 5f;
-                Debug.Log("5 seconds up");
-            }
-            else
-            {
-                Debug.Log("Out of Materials");
-                timeRemaining = 5f;
-            }
-                
+            BuildNeck();
         }
     }
+    public void BuildNeck()
+    {
+        var inventory = gameManager.GetComponent<InventoryHolder>();
+        if (!inventory) return;
 
-
+        if (inventory.InventorySystem.AddToInventory(ItemData, 1))
+        {
+            timeToBuild = 5f;
+        }
+    }
 }
